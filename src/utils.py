@@ -55,7 +55,8 @@ def create_route(city_list):
     return route
 
 
-def create_init_population(pop_size, city_list):
+def create_population(pop_size, city_list):
+    """Create a population of routes"""
     population = []
     for i in range(0, pop_size):
         population.append(create_route(city_list))

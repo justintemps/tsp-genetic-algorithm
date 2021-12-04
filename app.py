@@ -1,8 +1,13 @@
 from src.city import City
 from src.route import Route
-from src.utils import random_city_name, random_lat_long, create_init_population
+from src.utils import random_city_name, random_lat_long, create_population
 
+# The number of cities to visit
 NUMBER_CITIES = 10
+
+# The number of different routes we'll generate
+# in our initial population
+POPULATION_SIZE = 10
 
 # The list of cities we'll be visiting
 city_list = []
@@ -14,8 +19,8 @@ for city in range(NUMBER_CITIES):
     new_city = City(city_name, lat, long)
     city_list.append(new_city)
 
-initial_population = create_init_population(10, city_list)
-
+# A list of routes that will make up our initial population
+initial_population = create_population(POPULATION_SIZE, city_list)
 
 if __name__ == "__main__":
     # Test City and Route

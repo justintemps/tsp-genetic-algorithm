@@ -7,6 +7,12 @@ class Route:
             cities[-1]), "First and last cities must be the same"
         self.__cities = cities
         self.__distance = self.calc_distance()
+        self.__fitness = self.calc_fitness()
+
+    @property
+    def fitness(self):
+        """Returns the route's fitness score"""
+        return self.__fitness
 
     @property
     def cities(self):
@@ -26,8 +32,14 @@ class Route:
             distance += self.__cities[city].distance(self.__cities[city + 1])
         return distance
 
+    def calc_fitness(self):
+        """Assign a fitness score based on the distance of the route"""
+        fitness = 10000 / self.__distance
+        return fitness
+
     def __repr__(self):
         """print the route object"""
         city_names = map(lambda city: city.name, self.__cities)
-        repr_str = ",".join(city_names) + f",{self.distance}"
+        repr_str = ",".join(
+            city_names) + f",{round(self.distance)}" + f",{self.fitness}"
         return repr_str
