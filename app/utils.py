@@ -1,5 +1,5 @@
 from math import sin, cos, radians
-from numpy import arccos
+from numpy import arccos, random
 
 
 def get_city_distance(city1, city2):
@@ -17,3 +17,16 @@ def get_city_distance(city1, city2):
                                  cos(city2_in_radians[0]) *
                                  cos(city1_in_radians[1] -
                                      city2_in_radians[1]))
+
+
+def random_lat_long():
+    """
+    returns a tuple with random lat long pairs
+    """
+    lat_min = -90.
+    lat_max = 90.
+    long_min = -180.
+    long_max = 180.
+    lat = random.uniform(lat_min, lat_max, 1)
+    long = random.uniform(long_min, long_max, 1)
+    return lat[0], long[0]
