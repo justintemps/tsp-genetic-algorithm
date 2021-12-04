@@ -4,7 +4,7 @@ from numpy import arccos
 
 def get_city_distance(city1, city2):
     """
-    Take two pairs of long/lat coords <Tuple/List> and return the distance
+    Take two pairs of city objects and return the distance
     between them in kilometers<Float>. First, convert degrees to radians so they
     work with python trig functions.
     """
