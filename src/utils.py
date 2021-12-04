@@ -1,7 +1,7 @@
 """
 A collection of utility functions
 """
-
+import random as rand
 from math import sin, cos, radians
 from numpy import arccos, random
 
@@ -34,3 +34,11 @@ def random_lat_long():
     lat = random.uniform(lat_min, lat_max, 1)
     long = random.uniform(long_min, long_max, 1)
     return lat[0], long[0]
+
+
+def random_city_name(length=5):
+    """returns a random city name"""
+    consonants = "bcdfghjklmnpqrstvwxyz"
+    vowels = "aeiou"
+    return "".join(
+        rand.choice((consonants, vowels)[i % 2]) for i in range(length))
