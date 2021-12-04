@@ -1,3 +1,7 @@
+"""
+A collection of utility functions
+"""
+
 from math import sin, cos, radians
 from numpy import arccos, random
 
