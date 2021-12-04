@@ -25,6 +25,10 @@ class City:
         """Returns distance in km to another City"""
         return get_city_distance(self, city)
 
+    def __repr__(self):
+        """print the city object"""
+        return str(self.location)
+
 
 if __name__ == "__main__":
     city_1 = City(46.204391, 6.143158)
