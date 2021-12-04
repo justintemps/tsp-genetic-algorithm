@@ -1,9 +1,0 @@
-{
-  "python.pythonPath": "/Users/justinsmith/Dev/tsp-genetic-algorithm/.env/bin/python3",
-  "python.linting.enabled": true,
-  "python.formatting.autopep8Args": [
-    "--max-line-length",
-    "80",
-    "--experimental"
-  ]
-}
