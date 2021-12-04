@@ -1,4 +1,4 @@
-from utils import get_city_distance
+from src.utils import get_city_distance
 
 
 class City:
@@ -10,11 +10,18 @@ class City:
         - long (float): longitude
     """
 
-    def __init__(self, lat, long):
-        assert isinstance(lat, float), 'lat must be an Integer'
-        assert isinstance(long, float), 'long must be an Integer'
+    def __init__(self, name, lat, long):
+        assert isinstance(name, str), 'name must be a string'
+        assert isinstance(lat, float), 'lat must be an float'
+        assert isinstance(long, float), 'long must be an float'
+        self.__name = name
         self.__lat = lat
         self.__long = long
+
+    @property
+    def name(self):
+        """Returns the city name"""
+        return self.__name
 
     @property
     def location(self):
@@ -27,7 +34,8 @@ class City:
 
     def __repr__(self):
         """print the city object"""
-        return str(self.location)
+        lat, long = self.location
+        return f'({self.name}, {lat}, {long})'
 
 
 if __name__ == "__main__":
