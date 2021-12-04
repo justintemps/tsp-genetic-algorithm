@@ -4,6 +4,7 @@ A collection of utility functions
 import random as rand
 from math import sin, cos, radians
 from numpy import arccos, random
+import src.route
 
 
 def get_city_distance(city1, city2):
@@ -42,3 +43,20 @@ def random_city_name(length=5):
     vowels = "aeiou"
     return "".join(
         rand.choice((consonants, vowels)[i % 2]) for i in range(length))
+
+
+def create_route(city_list):
+    """Shuffle the cities list and use it to create a new route"""
+    cities = rand.sample(city_list, len(city_list))
+    # Make sure the first city is also the last city
+    first_city = cities[0]
+    cities.append(first_city)
+    route = src.route.Route(cities)
+    return route
+
+
+def create_init_population(pop_size, city_list):
+    population = []
+    for i in range(0, pop_size):
+        population.append(create_route(city_list))
+    return population
