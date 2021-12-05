@@ -28,18 +28,13 @@ if __name__ == "__main__":
     geneva = City("Geneva", 46.204391, 6.143158)
     rome = City("Rome", 41.902782, 12.496365)
     vienna = City("Vienna", 48.2082, 16.3738)
-    test_cities = [geneva, rome, vienna, geneva]
+    test_cities = [geneva, rome, vienna]
     test_route = Route(test_cities)
     assert round(test_route.distance) == 2265.0
 
-    # Test initial population
-    # for route in initial_population:
-    #    print(repr(route))
+    for route in initial_population:
+        print(route)
 
-    [route_1, route_2] = initial_population
+    route_1, route_2 = initial_population
 
-    print(route_1)
-    print(route_2)
-
-    child_route = cross_over(route_1, route_2)
-    print(child_route)
+    cross_over(route_1, route_2)
