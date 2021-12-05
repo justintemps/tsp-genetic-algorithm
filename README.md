@@ -1,5 +1,7 @@
 # TSP Genetic Algorithm
 
+## Justin Smith - MET CS 767 - Assignment 5
+
 This application implements a Genetic Algorithm to solve the Travelling Salesman Problem.
 
 ## Resources

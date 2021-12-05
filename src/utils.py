@@ -5,11 +5,13 @@ import random as rand
 from math import sin, cos, radians
 from numpy import arccos, random
 import src.route
+import src.city
+import Route
 
 
 def get_city_distance(city1, city2):
     """
-    Take two pairs of city objects and return the distance
+    Uses Haversine Formula to take two pairs of city objects and return the distance
     between them in kilometers<Float>. First, convert degrees to radians so they
     work with python trig functions.
     """
@@ -54,6 +56,9 @@ def create_route(city_list):
     route = src.route.Route(cities)
     return route
 
+# TODO: We have to make sure that the first and last cities are always
+# the same for each route in the population
+
 
 def create_population(pop_size, city_list):
     """Create a population of routes"""
@@ -61,3 +66,25 @@ def create_population(pop_size, city_list):
     for i in range(0, pop_size):
         population.append(create_route(city_list))
     return population
+
+
+# You are here!
+# def rank_routes(population):
+#     fitnessResults = {}
+#     for i in range(0, len(population)):
+#         fitnessResults[i] = Fitness(population[i]).routeFitness()
+#     return sorted(
+#         fitnessResults.items(),
+#         key=operator.itemgetter(1),
+#         reverse=True)
+
+
+def cross_over(route_1, route_2, cross_over_point=1):
+    route_1_cities = route_1.cities
+    route_2_cities = route_2.cities
+    assert route_1_cities[0] == route_2_cities[0] == route_1_cities[-1] == route_2_cities[-1], "First and last cities must be the same of both parents"
+    parent_1 = route_1.cities[1:-1]
+    parent_2 = route_2.cities[1:-1]
+    child = parent_1[0:cross_over_point]
+    child.append(parent_2[cross_over_point:])
+    return Route(child)
