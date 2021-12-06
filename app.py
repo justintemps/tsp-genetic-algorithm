@@ -1,5 +1,6 @@
 from src.city import City
 from src.route import Route
+from src.utils import rank_routes
 
 
 if __name__ == "__main__":
@@ -15,8 +16,13 @@ if __name__ == "__main__":
 
     route_1 = Route(city_list, [0, 1, 1, 1, 0])
     route_2 = Route(city_list, [1, 0, 1, 0, 1])
-    print(route_1)
-    print(route_2)
+    route_3 = Route(city_list, [0, 1, 1, 0, 0])
+    route_4 = Route(city_list, [1, 1, 1, 1, 1])
 
-    route_3 = Route.breed(route_1, route_2, city_list, crossover_point=4)
-    print(route_3)
+    initial_population = [route_1, route_2, route_3, route_4]
+
+    def breed_population():
+        ranked_routes = rank_routes(initial_population)
+        print(ranked_routes)
+
+    breed_population()

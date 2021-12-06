@@ -4,8 +4,6 @@ A collection of utility functions
 import random as rand
 from math import sin, cos, radians
 from numpy import arccos, random
-import src.route
-import src.city
 
 
 def get_city_distance(city1, city2):
@@ -48,12 +46,11 @@ def random_city_name(length=5):
 
 def get_unvisited_cities(current_city, city_list, visited_cities):
     """Returns a list of unvisted cities sorted by distance from the current city"""
-    cities = []
     unvisited_cities = [city for city in city_list
                         if city not in visited_cities]
-    for city in unvisited_cities:
-        city = city
-        distance = city.distance(current_city)
-        cities.append((city, distance))
-    sorted_cities = sorted(cities, key=lambda tup: tup[1])
-    return list(map(lambda tup: tup[0], sorted_cities))
+    return sorted(
+        unvisited_cities, key=lambda city: city.distance(current_city))
+
+
+def rank_routes(routes):
+    return sorted(routes, key=lambda route: route.fitness, reverse=True)
