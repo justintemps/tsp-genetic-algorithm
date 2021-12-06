@@ -1,15 +1,23 @@
+import random
 import src.utils
 
 
 class Route:
-    def __init__(self, city_list, dna):
+    def __init__(self, city_list, dna, mutation_rate=0.01):
         assert isinstance(dna, list), "dna must be a list of ints"
         assert isinstance(
             city_list, list), "city_list must be a list of City objects"
-        self.__dna = dna
-        self.__cities = self.__derive_cities(city_list, dna)
+        self.__mutation_rate = mutation_rate
+        self.__mutated = False
+        self.__dna = self.__possibly_mutated(dna)
+        self.__cities = self.__derive_cities(city_list, self.__dna)
         self.__distance = self.__calc_distance()
         self.__fitness = self.__calc_fitness()
+
+    @property
+    def mutated(self):
+        """Tells us whether this Route mutated or not"""
+        return self.__mutated
 
     @property
     def dna(self):
@@ -71,6 +79,20 @@ class Route:
 
         return cities
 
+    def __possibly_mutated(self, dna):
+        for swapped in range(len(dna)):
+            if (random.random() < self.__mutation_rate):
+                swapWith = int(random.random() * len(dna))
+
+                gene_1 = dna[swapped]
+                gene_2 = dna[swapWith]
+
+                dna[swapped] = gene_2
+                dna[swapWith] = gene_1
+
+                self.__mutated = True
+        return dna
+
     def __calc_distance(self):
         """Calculates the total distance of the route"""
         distance = 0
@@ -90,6 +112,6 @@ class Route:
         """print the route object"""
         city_names = list(map(lambda city: city.name, self.__cities))
         city_names.append(city_names[0])
-        repr_str = f"{self.__dna}  " + " -> ".join(
+        repr_str = f"{self.__mutated}  " f"{self.__dna}  " + " -> ".join(
             city_names) + f"  {round(self.distance):,}km" + f"  {round(self.fitness, 4)}"
         return repr_str
