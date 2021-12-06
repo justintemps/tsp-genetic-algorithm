@@ -33,7 +33,7 @@ class Route:
 
     @classmethod
     def breed(self, route_1, route_2, city_list, crossover_point=1):
-
+        """Uses crossover to create a child route from two parent routes"""
         assert len(route_1.dna) == len(
             route_2.dna), "In crossover, parent DNA must have same length"
         assert len(

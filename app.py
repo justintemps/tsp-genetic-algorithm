@@ -1,42 +1,21 @@
 from src.city import City
 from src.route import Route
-from src.utils import random_city_name, random_lat_long, create_population, cross_over
-
-# The number of cities to visit
-NUMBER_CITIES = 6
-
-# The number of different routes we'll generate
-# in our initial population
-POPULATION_SIZE = 2
-
-# The list of cities we'll be visiting
-city_list = []
-
-# Create new cities with random names and locations
-for city in range(NUMBER_CITIES):
-    city_name = random_city_name()
-    lat, long = random_lat_long()
-    new_city = City(city_name, lat, long)
-    city_list.append(new_city)
-
-# A list of routes that will make up our initial population
-initial_population = create_population(POPULATION_SIZE, city_list)
 
 
 if __name__ == "__main__":
-    # Test City and Route
     geneva = City("Geneva", 46.204391, 6.143158)
     rome = City("Rome", 41.902782, 12.496365)
     vienna = City("Vienna", 48.2082, 16.3738)
+    boston = City("Boston", 42.3601, -71.0589)
+    shanghai = City("Shanghai", 31.2304, 121.4737)
+    sydney = City("Sydney", -33.865143, 151.209900)
 
-    test_cities = [geneva, rome, vienna]
-    test_route = Route(test_cities)
-    assert round(test_route.distance) == 2265.0
+    city_list = [geneva, rome, vienna, boston, shanghai, sydney]
 
-    for route in initial_population:
-        print(route)
+    route_1 = Route(city_list, [0, 1, 1, 1])
+    route_2 = Route(city_list, [1, 2, 0, 0])
+    print(route_1)
+    print(route_2)
 
-    route_1, route_2 = initial_population
-
-    new_route = cross_over(route_1, route_2)
-    print(new_route)
+    route_3 = Route.breed(route_1, route_2, city_list, crossover_point=2)
+    print(route_3)
