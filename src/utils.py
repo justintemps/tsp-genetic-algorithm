@@ -57,14 +57,3 @@ def get_unvisited_cities(current_city, city_list, visited_cities):
         cities.append((city, distance))
     sorted_cities = sorted(cities, key=lambda tup: tup[1])
     return list(map(lambda tup: tup[0], sorted_cities))
-
-
-def cross_over(route_1, route_2, cross_over_point=2):
-    assert route_1.cities[0].name == route_2.cities[0].name, "In cross_over, both routes must have the same first city"
-    # Get everything from the first route up until the cross_over_point
-    part_1 = route_1.cities[0:cross_over_point]
-    # Fill in all the missing legs with the other route
-    part_2 = [city for city in route_2.cities if city not in part_1]
-    # PUt the two parts of the route together and instantiate a new Route object
-    new_itinerary = part_1 + part_2
-    return src.route.Route(new_itinerary)
