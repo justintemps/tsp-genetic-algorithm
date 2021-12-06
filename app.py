@@ -3,7 +3,7 @@ from src.route import Route
 from src.utils import random_city_name, random_lat_long, create_population, cross_over
 
 # The number of cities to visit
-NUMBER_CITIES = 5
+NUMBER_CITIES = 6
 
 # The number of different routes we'll generate
 # in our initial population
@@ -28,6 +28,7 @@ if __name__ == "__main__":
     geneva = City("Geneva", 46.204391, 6.143158)
     rome = City("Rome", 41.902782, 12.496365)
     vienna = City("Vienna", 48.2082, 16.3738)
+
     test_cities = [geneva, rome, vienna]
     test_route = Route(test_cities)
     assert round(test_route.distance) == 2265.0
@@ -37,4 +38,5 @@ if __name__ == "__main__":
 
     route_1, route_2 = initial_population
 
-    cross_over(route_1, route_2)
+    new_route = cross_over(route_1, route_2)
+    print(new_route)
