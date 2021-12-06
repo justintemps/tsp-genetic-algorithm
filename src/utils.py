@@ -46,26 +46,17 @@ def random_city_name(length=5):
         rand.choice((consonants, vowels)[i % 2]) for i in range(length))
 
 
-def create_route(city_list):
-    """Shuffle the cities list and use it to create a new route"""
-    departure_city = city_list[0]
-    # Separate the itinerary from the departure city
-    itinerary = city_list[1:]
-    # Randomize the itinerary stops
-    itinerary = rand.sample(itinerary, len(itinerary))
-    # Insert the departure city back at the beginning
-    itinerary.insert(0, departure_city)
-    # Create a new route
-    route = src.route.Route(itinerary)
-    return route
-
-
-def create_population(pop_size, city_list):
-    """Create a population of routes"""
-    population = []
-    for i in range(0, pop_size):
-        population.append(create_route(city_list))
-    return population
+def get_unvisited_cities(current_city, city_list, visited_cities):
+    """Returns a list of unvisted cities sorted by distance from the current city"""
+    cities = []
+    unvisited_cities = [city for city in city_list
+                        if city not in visited_cities]
+    for city in unvisited_cities:
+        city = city
+        distance = city.distance(current_city)
+        cities.append((city, distance))
+    sorted_cities = sorted(cities, key=lambda tup: tup[1])
+    return list(map(lambda tup: tup[0], sorted_cities))
 
 
 def cross_over(route_1, route_2, cross_over_point=2):
