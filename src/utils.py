@@ -73,42 +73,45 @@ def rank_routes(routes):
     return sorted(routes, key=lambda route: route.fitness, reverse=True)
 
 
-def select_mating_pool(ranked_routes, elite_size=1):
-    """Selects the mating pool of parents to be chosen to produce the next generation
-    of routes. elite_size determines how many of the top scoring routes will be added
-    off the bat. The best will be selected as a probability of their scores"""
-    selection = []
-    roulette = []
-    # Select all of our elite routes right off the bat
-    for i in range(0, elite_size):
-        selection.append(ranked_routes[i])
-    # Create a table of the routes so we can calculate the probability of their
-    # being selected. This is our roulette wheel
-    for i in range(elite_size, len(ranked_routes)):
-        roulette.append((ranked_routes[i].id, ranked_routes[i].fitness))
-    dataframe = pd.DataFrame(array(roulette), columns=["id", "fitness"])
-    dataframe['running_total'] = dataframe.fitness.cumsum()
-    dataframe['percent'] = 100 * (dataframe.fitness / dataframe.running_total)
-    # Spin the roulette wheel
-    for i in range(len(roulette)):
-        pick = 100 * rand.random()
-        if pick <= dataframe.iat[i, 3]:
-            selection.append(ranked_routes[i])
-    return selection
-
-
-def breed_mating_pool(mating_pool, elite_size=1, crossover_point=1):
+def breed_generation(
+        routes, elite_size=0, crossover_point=1, mutation_rate=0.1):
+    # The next generation
     children = []
-    pool = rand.sample(mating_pool, len(mating_pool))
-    # The elite group automatically makes it to the next generation
-    for i in range(0, elite_size):
-        children.append(mating_pool[i])
 
-    # Everybody else has to breed new offspring
-    for i in range(0, len(mating_pool) - elite_size):
-        parent_1 = pool[i]
-        parent_2 = pool[len(mating_pool) - i - 1]
-        child = src.route.Route.breed(parent_1, parent_2, crossover_point)
+    # Rank the routes in order of fitness
+    ranked_routes = rank_routes(routes)
+
+    # Promote elite routes to the next generation
+    for i in range(elite_size):
+        children.append(ranked_routes[i])
+
+    # Get the fitness scores of all the routes
+    fitness_scores = map(lambda route: route.fitness, ranked_routes)
+
+    # Our roulette wheel is a dataframe. The last column has
+    # rising percents based on the fitness scores of the matching route
+    # To spin the wheel, we'll get a random number and then move up the table
+    # until we find a parent
+    roulette = pd.DataFrame(fitness_scores, columns=["fitness"])
+    roulette['cum_sum'] = roulette.fitness.cumsum()
+    roulette['percent'] = 100 * (
+        roulette.cum_sum / roulette.fitness.sum())
+
+    # Spin the wheel to get parents and create offspring until we have
+    # a complete population
+    for i in range(len(ranked_routes) - elite_size):
+        parents = []
+        # Select the two parents based on weighted probability
+        while (len(parents) < 2):
+            pick = 100 * rand.random()
+            for j in range(0, len(ranked_routes)):
+                if pick <= roulette.iat[j, 2]:
+                    parents.append(ranked_routes[j])
+                    break
+        # crossover the two parents to create a child and add to new population
+        parent_1, parent_2 = parents
+        child = src.route.Route.breed(
+            parent_1, parent_2, crossover_point, mutation_rate)
         children.append(child)
 
     return children

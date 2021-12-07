@@ -1,13 +1,32 @@
-from numpy.random.mtrand import normal
 from src.city import City
 from src.route import Route
-from src.utils import breed_mating_pool, random_gene_pool, rank_routes, select_mating_pool
+from src.utils import breed_generation, random_gene_pool, rank_routes
 
-NUMBER_CITIES = 8
-INITIAL_POPULATION_SIZE = 200
-DNA_LENGTH = NUMBER_CITIES - 2
+# The number of cities in our route
+NUMBER_CITIES = 20
+
+# The number of routes in our initial population
+INITIAL_POPULATION_SIZE = 100
+
+# Rate at which we expect mutations
+MUTATION_RATE = 0.1
+
+# Number of generations to run our algorithm through
+GENERATIONS = 100
+
+# Number of top routes to conserve while breeding
 ELITE_SIZE = 10
-CROSSOVER_POINT = 2
+
+# Where in the route to dna to execute crossover
+CROSSOVER_POINT = 10
+
+# Number of steps away from closest city our route can move
+# in a single leg. Example:
+# 0 = closest city
+# 1 = next closest city
+# 2 = next closest city after that
+# 3 ...
+MAX_BASE = 2
 
 if __name__ == "__main__":
 
@@ -15,20 +34,20 @@ if __name__ == "__main__":
     city_list = City.random_cities(NUMBER_CITIES)
 
     # Generate a gene pool
-    gene_pool = random_gene_pool(INITIAL_POPULATION_SIZE, DNA_LENGTH)
+    dna_length = len(city_list) - 2
+    gene_pool = random_gene_pool(INITIAL_POPULATION_SIZE, dna_length, MAX_BASE)
 
-    # Generate Route objects from the city_list and gene_pool
+    # Generate our initial population of Route objects from the city_list and gene_pool
     initial_population = list(map(lambda dna: Route(city_list, dna), gene_pool))
 
-    # Rank routes in order of their fitness score
-    ranked_population = rank_routes(initial_population)
+    # placeholder for the last generation
+    last_generation = initial_population
 
-    # Select the parents for our first generation
-    mating_pool = select_mating_pool(ranked_population, ELITE_SIZE)
+    # Generate a new population
+    for generation in range(GENERATIONS):
+        new_generation = breed_generation(
+            last_generation, ELITE_SIZE, CROSSOVER_POINT, MUTATION_RATE)
+        last_generation = new_generation
 
-    # Breed population to get a new generation
-    next_generation = breed_mating_pool(
-        mating_pool, ELITE_SIZE, CROSSOVER_POINT)
-
-    for route in next_generation:
-        print(route)
+    print(rank_routes(initial_population)[0].distance)
+    print(rank_routes(last_generation)[0].distance)

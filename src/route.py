@@ -1,10 +1,9 @@
-import uuid
 import random
 import src.utils
 
 
 class Route:
-    def __init__(self, city_list, dna, mutation_rate=0.01):
+    def __init__(self, city_list, dna, mutation_rate=0.1):
         assert isinstance(dna, list), "dna must be a list of ints"
         assert isinstance(
             city_list, list), "city_list must be a list of City objects"
@@ -14,11 +13,6 @@ class Route:
         self.__cities = self.__derive_cities(city_list, self.__dna)
         self.__distance = self.__calc_distance()
         self.__fitness = self.__calc_fitness()
-        self.__id = uuid.uuid1()
-
-    @property
-    def id(self):
-        return self.__id
 
     @property
     def mutated(self):
@@ -46,7 +40,7 @@ class Route:
         return self.__distance
 
     @classmethod
-    def breed(self, route_1, route_2, crossover_point=1):
+    def breed(self, route_1, route_2, crossover_point=1, mutation_rate=0.1):
         """Uses crossover to create a child route from two parent routes"""
         assert len(route_1.dna) == len(
             route_2.dna), "In crossover, parent DNA must have same length"
@@ -62,7 +56,7 @@ class Route:
         # list of cities
         city_list = route_1.cities
         new_dna = gene_1 + gene_2
-        return self(city_list, new_dna)
+        return self(city_list, new_dna, mutation_rate)
 
     def __derive_cities(self, city_list, strategy):
         """Dervie a list of cities from the city_list according to a strategy
@@ -73,6 +67,7 @@ class Route:
         assert len(strategy) == len(
             city_list) - 2, "strategy should have two fewer elements than city_list"
 
+        # Plus one to take into account the return trip
         for step in range(len(strategy) + 1):
             # Get the unvisited cities in order of distance to the current city
             unvisited_cities = src.utils.get_unvisited_cities(
