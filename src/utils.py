@@ -11,7 +11,7 @@ import src.route
 def get_city_distance(city1, city2):
     """
     Uses Haversine Formula to take two pairs of city objects and return the distance
-    between them in kilometers<Float>. First, convert degrees to radians so they
+    between them in kilometers. First, convert degrees to radians so they
     work with python trig functions.
     """
     EARTH_RADIUS = 6371.0  # in kilometers
@@ -26,9 +26,7 @@ def get_city_distance(city1, city2):
 
 
 def random_lat_long():
-    """
-    returns a tuple with random lat long pairs
-    """
+    """returns a tuple with random lat long pairs"""
     lat_min = -90.
     lat_max = 90.
     long_min = -180.
@@ -48,8 +46,7 @@ def random_city_name(length=5):
 
 def random_gene_pool(size, num_genes, max_base=1):
     """Returns a list of route dna lists
-    e.g. [[0,1,0,1][0,0,1,1]...]
-    """
+    e.g. [[0,1,0,1][0,0,1,1]...]"""
     gene_pool = []
     for i in range(size):
         dna = []
@@ -75,6 +72,7 @@ def rank_routes(routes):
 
 def breed_generation(
         routes, elite_size=0, crossover_point=1, mutation_rate=0.1):
+    """"""
     # The next generation
     children = []
 
@@ -108,6 +106,7 @@ def breed_generation(
                 if pick <= roulette.iat[j, 2]:
                     parents.append(ranked_routes[j])
                     break
+
         # crossover the two parents to create a child and add to new population
         parent_1, parent_2 = parents
         child = src.route.Route.breed(

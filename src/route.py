@@ -50,10 +50,8 @@ class Route:
             route_2.cities), "You may not breed two routes with different cities"
         gene_1 = route_1.dna[:crossover_point]
         gene_2 = route_2.dna[crossover_point:]
-        # Because the cities will be reordered according to the route's dna upon instantiation
-        # it doesn't matter what order the city_list is in, so we can just use the parents
-        # list of cities as the city list. What's important is that both parents have the same
-        # list of cities
+        # The order of the cities isn't important, they'll just get sorted by distance
+        # when the route derives cities from dna
         city_list = route_1.cities
         new_dna = gene_1 + gene_2
         return self(city_list, new_dna, mutation_rate)
