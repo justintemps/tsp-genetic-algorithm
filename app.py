@@ -1,28 +1,34 @@
+from numpy.random.mtrand import normal
 from src.city import City
 from src.route import Route
-from src.utils import rank_routes
+from src.utils import breed_mating_pool, random_gene_pool, rank_routes, select_mating_pool
 
+NUMBER_CITIES = 8
+INITIAL_POPULATION_SIZE = 200
+DNA_LENGTH = NUMBER_CITIES - 2
+ELITE_SIZE = 10
+CROSSOVER_POINT = 2
 
 if __name__ == "__main__":
-    geneva = City("Geneva", 46.204391, 6.143158)
-    rome = City("Rome", 41.902782, 12.496365)
-    vienna = City("Vienna", 48.2082, 16.3738)
-    boston = City("Boston", 42.3601, -71.0589)
-    shanghai = City("Shanghai", 31.2304, 121.4737)
-    sydney = City("Sydney", -33.865143, 151.209900)
-    cape_town = City("Cape Town", -33.918861, 18.423300)
 
-    city_list = [geneva, rome, vienna, boston, shanghai, sydney, cape_town]
+    # Generate a list of City objects with random names and lat/long coords
+    city_list = City.random_cities(NUMBER_CITIES)
 
-    route_1 = Route(city_list, [0, 1, 1, 1, 0])
-    route_2 = Route(city_list, [1, 0, 1, 0, 1])
-    route_3 = Route(city_list, [0, 1, 1, 0, 0])
-    route_4 = Route(city_list, [1, 1, 1, 1, 1])
+    # Generate a gene pool
+    gene_pool = random_gene_pool(INITIAL_POPULATION_SIZE, DNA_LENGTH)
 
-    initial_population = [route_1, route_2, route_3, route_4]
+    # Generate Route objects from the city_list and gene_pool
+    initial_population = list(map(lambda dna: Route(city_list, dna), gene_pool))
 
-    def breed_population():
-        ranked_routes = rank_routes(initial_population)
-        print(ranked_routes)
+    # Rank routes in order of their fitness score
+    ranked_population = rank_routes(initial_population)
 
-    breed_population()
+    # Select the parents for our first generation
+    mating_pool = select_mating_pool(ranked_population, ELITE_SIZE)
+
+    # Breed population to get a new generation
+    next_generation = breed_mating_pool(
+        mating_pool, ELITE_SIZE, CROSSOVER_POINT)
+
+    for route in next_generation:
+        print(route)

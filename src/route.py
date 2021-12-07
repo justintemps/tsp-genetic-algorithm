@@ -1,3 +1,4 @@
+import uuid
 import random
 import src.utils
 
@@ -13,6 +14,11 @@ class Route:
         self.__cities = self.__derive_cities(city_list, self.__dna)
         self.__distance = self.__calc_distance()
         self.__fitness = self.__calc_fitness()
+        self.__id = uuid.uuid1()
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def mutated(self):
@@ -40,14 +46,21 @@ class Route:
         return self.__distance
 
     @classmethod
-    def breed(self, route_1, route_2, city_list, crossover_point=1):
+    def breed(self, route_1, route_2, crossover_point=1):
         """Uses crossover to create a child route from two parent routes"""
         assert len(route_1.dna) == len(
             route_2.dna), "In crossover, parent DNA must have same length"
         assert len(
             route_1.dna) > crossover_point, "In crossover, crossover_point can't be greater that parents' length"
+        assert set(route_1.cities) == set(
+            route_2.cities), "You may not breed two routes with different cities"
         gene_1 = route_1.dna[:crossover_point]
         gene_2 = route_2.dna[crossover_point:]
+        # Because the cities will be reordered according to the route's dna upon instantiation
+        # it doesn't matter what order the city_list is in, so we can just use the parents
+        # list of cities as the city list. What's important is that both parents have the same
+        # list of cities
+        city_list = route_1.cities
         new_dna = gene_1 + gene_2
         return self(city_list, new_dna)
 
