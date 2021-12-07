@@ -1,9 +1,10 @@
+import matplotlib.pyplot as plt
 from src.city import City
 from src.route import Route
 from src.utils import breed_generation, random_gene_pool, rank_routes
 
 # The number of cities in our route
-NUMBER_CITIES = 20
+NUMBER_CITIES = 30
 
 # The number of routes in our initial population
 INITIAL_POPULATION_SIZE = 100
@@ -12,7 +13,7 @@ INITIAL_POPULATION_SIZE = 100
 MUTATION_RATE = 0.1
 
 # Number of generations to run our algorithm through
-GENERATIONS = 100
+GENERATIONS = 50
 
 # Number of top routes to conserve while breeding
 ELITE_SIZE = 10
@@ -43,11 +44,18 @@ if __name__ == "__main__":
     # placeholder for the last generation
     last_generation = initial_population
 
+    # This will hold our shortest routes from each generation
+    progress = []
+
     # Generate a new population
     for generation in range(GENERATIONS):
         new_generation = breed_generation(
             last_generation, ELITE_SIZE, CROSSOVER_POINT, MUTATION_RATE)
         last_generation = new_generation
+        shortest_distance = rank_routes(new_generation)[0].distance
+        progress.append(shortest_distance)
 
-    print(rank_routes(initial_population)[0].distance)
-    print(rank_routes(last_generation)[0].distance)
+    plt.plot(progress)
+    plt.ylabel('Distance')
+    plt.xlabel('Generation')
+    plt.show()
