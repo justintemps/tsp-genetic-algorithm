@@ -1,22 +1,19 @@
-import matplotlib.pyplot as plt
-from src.city import City
-from src.route import Route
-from src.utils import breed_generation, random_gene_pool, rank_routes
+from src.algorithm import genetic_algorithm
 
 # The number of cities in our route
-NUMBER_CITIES = 30
+NUMBER_CITIES = 25
 
 # The number of routes in our initial population
 INITIAL_POPULATION_SIZE = 100
 
 # Rate at which we expect mutations
-MUTATION_RATE = 0.1
+MUTATION_RATE = 0.01
 
 # Number of generations to run our algorithm through
-GENERATIONS = 50
+GENERATIONS = 500
 
 # Number of top routes to conserve while breeding
-ELITE_SIZE = 10
+ELITE_SIZE = 20
 
 # Where in the route to dna to execute crossover
 CROSSOVER_POINT = 10
@@ -27,35 +24,13 @@ CROSSOVER_POINT = 10
 # 1 = next closest city
 # 2 = next closest city after that
 # 3 ...
-MAX_BASE = 2
+MAX_BASE = 1
 
 if __name__ == "__main__":
 
-    # Generate a list of City objects with random names and lat/long coords
-    city_list = City.random_cities(NUMBER_CITIES)
+    best_route_start, best_route_end = genetic_algorithm(
+        GENERATIONS, INITIAL_POPULATION_SIZE, NUMBER_CITIES, max_base=MAX_BASE,
+        crossover_point=CROSSOVER_POINT, mutation_rate=MUTATION_RATE,
+        elite_size=ELITE_SIZE)
 
-    # Generate a gene pool
-    dna_length = len(city_list) - 2
-    gene_pool = random_gene_pool(INITIAL_POPULATION_SIZE, dna_length, MAX_BASE)
-
-    # Generate our initial population of Route objects from the city_list and gene_pool
-    initial_population = list(map(lambda dna: Route(city_list, dna), gene_pool))
-
-    # placeholder for the last generation
-    last_generation = initial_population
-
-    # This will hold our shortest routes from each generation
-    progress = []
-
-    # Generate a new population
-    for generation in range(GENERATIONS):
-        new_generation = breed_generation(
-            last_generation, ELITE_SIZE, CROSSOVER_POINT, MUTATION_RATE)
-        last_generation = new_generation
-        shortest_distance = rank_routes(new_generation)[0].distance
-        progress.append(shortest_distance)
-
-    plt.plot(progress)
-    plt.ylabel('Distance')
-    plt.xlabel('Generation')
-    plt.show()
+    print(best_route_start, best_route_end)
