@@ -72,7 +72,7 @@ def rank_routes(routes):
 
 def breed_generation(
         routes, elite_size=0, crossover_point=1, mutation_rate=0.1):
-    """"""
+    """Takes a group of routes a breeds a new generation"""
     # The next generation
     children = []
 
