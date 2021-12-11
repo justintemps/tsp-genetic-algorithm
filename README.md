@@ -1,7 +1,5 @@
 # TSP Genetic Algorithm
 
-**Justin Smith - MET CS 767 - Assignment 5**
-
 ## Description
 
 This application implements a Genetic Algorithm to solve the Travelling Salesman Problem. It implements a solution for crossover proposed by Professor Eric Braude, Boston University.
