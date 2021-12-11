@@ -33,7 +33,7 @@ pip3 install -r requirements.txt
 ### App
 
 - Runs the algorithm with randomly generated cities
-- Create a line chart showing the algorithm's progress after successive generations
+- Creates a line chart showing the algorithm's progress after successive generations
 - Parameters for altering the data and hyperparameters for modyfing the algorithm are
   available as constants listed at the top of the file
 - City distances are calculated automatically from lat/long coordinates
@@ -42,6 +42,20 @@ From the project root:
 
 ```bash
 python3 app.py
+```
+
+### Boston
+
+- Runs the algorithm four predefined cities
+- Creates a line chart showing the algorithm's progress after successive generations
+- Parameters for altering the data and hyperparameters for modyfing the algorithm are
+  available as constants listed at the top of the file
+- City distances are calculated automatically from lat/long coordinates
+
+From the project root:
+
+```bash
+python3 boston.py
 ```
 
 ## Resources

@@ -10,7 +10,7 @@ INITIAL_POPULATION_SIZE = 100
 MUTATION_RATE = 0.01
 
 # Number of generations to run our algorithm through
-GENERATIONS = 500
+GENERATIONS = 250
 
 # Number of top routes to conserve while breeding
 ELITE_SIZE = 20
@@ -24,7 +24,7 @@ CROSSOVER_POINT = 10
 # 1 = next closest city
 # 2 = next closest city after that
 # 3 ...
-MAX_BASE = 1
+MAX_BASE = 4
 
 if __name__ == "__main__":
 

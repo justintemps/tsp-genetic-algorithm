@@ -6,7 +6,7 @@ MAX_BASE = 2
 GENERATIONS = 20
 CROSSOVER_POINT = 1
 MUTATION_RATE = 0.1
-ELITE_SIZE = 1
+ELITE_SIZE = 2
 
 if __name__ == "__main__":
 
